@@ -36,4 +36,4 @@ class PcPart():
 
     def __str__(self) -> str:
         """Return a formatted version of this PcPart's attributes."""
-        return f"name: {self.name}\nprice: {self.price}\nlink: {self.link}\ndate: {self.date}\n"
+        return f"({self.name}, {self.website}, {self.price}, {self.date})"

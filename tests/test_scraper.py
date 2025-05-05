@@ -1,6 +1,6 @@
 """Testing module for functions in scraper.py"""
 
-from app import scraper
+from app.scraper import scraper
 
 
 def test_extract_cpu_info() -> None:

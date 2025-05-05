@@ -1,56 +1,33 @@
-"""Hopefully a cool webscraping tool.
+"""
+Entry point for the PC Part Scraper application.
 
-Currently scrapes CPU listings from Newegg and stores the data in an SQLite database.
-Intended for testing the scraping and database pipeline. Future iterations may 
-expand to include additional part categories, websites, and application features.
+Provides a command-line interface for running either the interactive
+terminal UI or the database updater. Currently supports scraping
+CPU, GPU, and motherboard listings from Newegg and storing them
+in a local SQLite database.
+
+Future versions may expand to additional part types, websites, 
+and application features such as filtering, comparison, and price tracking.
 """
 
-import os
-import app.scraper as scraper
-import app.database as database
+import argparse
+from app.cli import interactive, updater
 
 
-def cpu_table_main() -> None:
-    """Current temporary setup of the GPU tables and information."""
-    # Scrape CPU data
-    cpus = scraper.scrape_newegg_cpus()
+def main():
+    parser = argparse.ArgumentParser(description="PC Part Scraper CLI")
+    parser.add_argument("--interactive", action="store_true", help="Run interactive terminal app")
+    parser.add_argument("--update", action="store_true", help="Update the local database")
 
-    # Connect to the database
-    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "parts.db")
-    connection = database.get_connection(db_path)
+    args = parser.parse_args()
 
-    # === DEVELOPMENT ONLY: Reset the tables for clean testing ===
-    # connection.execute("DROP TABLE IF EXISTS cpus")
-    # connection.execute("DROP TABLE IF EXISTS cpu_prices")
-
-    # Create fresh tables
-    database.create_cpus_table(connection)
-    database.create_part_prices_table(connection, 'cpu')
-
-    # Insert scraped CPUs
-    database.insert_all_cpus(connection, cpus)
-
-
-def gpu_table_main() -> None:
-    """Current temporary setup of the GPU tables and information."""
-    # Scrape GPU data
-    gpus = scraper.scrape_newegg_gpus()
-
-    # Connect to the database
-    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "parts.db")
-    connection = database.get_connection(db_path)
-
-    # === DEVELOPMENT ONLY: Reset the tables for clean testing ===
-    connection.execute("DROP TABLE IF EXISTS gpus")
-    connection.execute("DROP TABLE IF EXISTS gpu_prices")
-
-    # Create fresh tables
-    database.create_gpus_table(connection)
-    database.create_part_prices_table(connection, 'gpu')
-
-    # Insert scraped GPUs
-    database.insert_all_gpus(connection, gpus)
+    if args.interactive:
+        interactive.run_ui()
+    elif args.update:
+        updater.update_database()
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":
-    cpu_table_main()
+    main()
