@@ -25,13 +25,8 @@ def extract_gpu_info(full_title: str) -> tuple[str, str]:
 
 def extract_mobo_info(full_title: str) -> tuple[str, str]:
     """Extract and return the clean motherboard name and brand from <full_title>."""
-    match_name = r"(?i)(?:(Refurbished|Open Box) +)?(.*?)(?=\s(AMD|AM5|AM4|LGA\s?\d{3,4}|Micro-ATX|Motherboard|Desktop|Intel|Ultra))" # not fully working
     match_brand = r"(?i)^(?:(Refurbished|Open Box) +)?(\w+)"
 
-    # name = re.match(match_name, full_title)
     brand = re.match(match_brand, full_title)
-
-    # if name:
-    #     return name.group(2), brand.group(1)
 
     return full_title, brand.group(1) # get name later

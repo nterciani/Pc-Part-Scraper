@@ -6,7 +6,6 @@ for CPUs, GPUs, and motherboards based on stored data.
 This module is designed for user-facing terminal interaction.
 """
 
-import os
 import app.database.database as database
 from app.config import DB_PATH
 
@@ -28,6 +27,7 @@ def run_ui() -> None:
 
         if choice == "1":
             while True:
+                print("\n==== CPUs ====")
                 print("1. Display all CPUs")
                 print("2. Search for a CPU by name")
                 print("3. Back")
@@ -48,6 +48,7 @@ def run_ui() -> None:
                     print("Invalid option.")
         elif choice == "2":
             while True:
+                print("\n==== GPUs ====")
                 print("1. Display all GPUs")
                 print("2. Search for a GPU by name")
                 print("3. Back")
@@ -68,6 +69,7 @@ def run_ui() -> None:
                     print("Invalid option.")
         elif choice == "3":
             while True:
+                print("\n==== Motherboards ====")
                 print("1. Display all motherboards")
                 print("2. Search for a motherboard by name")
                 print("3. Back")

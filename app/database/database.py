@@ -15,8 +15,7 @@ from app.models.motherboard import MOBO
 
 # === Universal database functions ===
 def get_connection(db_name: str) -> sqlite3.Connection:
-    """Return a connection to database <db_name>.
-    """
+    """Return a connection to database <db_name>."""
     try:
         return sqlite3.connect(db_name)
     except Exception as e:
@@ -56,7 +55,6 @@ def create_part_prices_table(connection: sqlite3.Connection, part_type: str) -> 
     try:
         with connection:
             connection.execute(query)
-            print(f"{part_type}_prices table was created.") # debug
     except Exception as e:
         print(f"Error: {e}")
 
@@ -74,7 +72,6 @@ def insert_part_price(connection: sqlite3.Connection, part: PcPart) -> None:
     try:
         with connection:
             connection.execute(query, (part_id, part.website, part.price, part.link, part.date))
-            print(f"{part_type}: {part.name} was added to the {part_type}_prices table with price {part.price}") # debug
     except Exception as e:
             print(f"Error: {e}")
 
@@ -113,7 +110,6 @@ def create_cpus_table(connection: sqlite3.Connection) -> None:
     try:
         with connection:
             connection.execute(query)
-        print("cpus table was created.") # debug
     except Exception as e:
         print(f"Error: {e}")
 
@@ -130,17 +126,14 @@ def insert_cpu(connection: sqlite3.Connection, cpu: CPU) -> None:
     - Adds <cpu> into the 'cpus' table if not already present.
     - Adds the pricing information into the 'cpu_prices' table.
     """
-    # unique portion
     if not get_part_id(connection, cpu):
         query = "INSERT INTO cpus (brand, name) VALUES (?, ?)"
         try:
             with connection:
                 connection.execute(query, (cpu.brand, cpu.name))
-                print(f"CPU: {cpu.name} was added to the cpus table.") # debug
         except Exception as e:
             print(f"Error: {e}")
 
-    # non-unique portion
     insert_part_price(connection, cpu)
 
 
@@ -183,7 +176,6 @@ def create_gpus_table(connection: sqlite3.Connection) -> None:
     try:
         with connection:
             connection.execute(query)
-        print("gpus table was created.") # debug
     except Exception as e:
         print(f"Error: {e}")
 
@@ -200,17 +192,14 @@ def insert_gpu(connection: sqlite3.Connection, gpu: GPU) -> None:
     - Adds <gpu> into the 'gpus' table if not already present.
     - Adds the pricing information into the 'gpu_prices' table.
     """
-    # unique portion
     if not get_part_id(connection, gpu):
         query = "INSERT INTO gpus (brand, name) VALUES (?, ?)"
         try:
             with connection:
                 connection.execute(query, (gpu.brand, gpu.name))
-                print(f"GPU: {gpu.name} was added to the gpus table.") # debug
         except Exception as e:
             print(f"Error: {e}")
 
-    # non-unique portion
     insert_part_price(connection, gpu)
 
 
@@ -253,7 +242,6 @@ def create_mobos_table(connection: sqlite3.Connection) -> None:
     try:
         with connection:
             connection.execute(query)
-        print("mobos table was created.") # debug
     except Exception as e:
         print(f"Error: {e}")
 
@@ -270,17 +258,14 @@ def insert_mobo(connection: sqlite3.Connection, mobo: MOBO) -> None:
     - Adds <mobo> into the 'mobos' table if not already present.
     - Adds the pricing information into the 'mobo_prices' table.
     """
-    # unique portion
     if not get_part_id(connection, mobo):
         query = "INSERT INTO mobos (brand, name) VALUES (?, ?)"
         try:
             with connection:
                 connection.execute(query, (mobo.brand, mobo.name))
-                print(f"motherboard: {mobo.name} was added to the mobos table.") # debug
         except Exception as e:
             print(f"Error: {e}")
 
-    # non-unique portion
     insert_part_price(connection, mobo)
 
 

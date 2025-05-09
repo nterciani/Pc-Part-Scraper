@@ -6,7 +6,6 @@ and inserting both part specifications and pricing data.
 Intended to be run manually or on a schedule to keep the database current.
 """
 
-import os
 import app.scraper.scraper as scraper
 import app.database.database as database
 from app.config import DB_PATH
@@ -29,10 +28,13 @@ def update_database() -> None:
     database.create_part_prices_table(connection, 'mobo')
 
     # scrape data
-    cpus = scraper.scrape_newegg_cpus()
-    gpus = scraper.scrape_newegg_gpus()
-    mobos = scraper.scrape_newegg_mobos()
+    try:
+        cpus = scraper.scrape_newegg_cpus()
+        gpus = scraper.scrape_newegg_gpus()
+        mobos = scraper.scrape_newegg_mobos()
 
-    database.insert_all_cpus(connection, cpus)
-    database.insert_all_gpus(connection, gpus)
-    database.insert_all_mobos(connection, mobos)
+        database.insert_all_cpus(connection, cpus)
+        database.insert_all_gpus(connection, gpus)
+        database.insert_all_mobos(connection, mobos)
+    except Exception as e:
+        print(f"Error: {e}. Database update incomplete.")

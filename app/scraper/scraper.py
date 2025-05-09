@@ -42,8 +42,6 @@ def scrape_newegg_cpus() -> list[CPU]:
         # extract all CPUs on page
         cpu_tags = soup.find_all(name="div", class_="item-cell")
 
-        print(f"found {len(cpu_tags)} CPUs on page {page}.") # debug
-
         # extract relevant cpu information
         for cpu in cpu_tags:
             title = cpu.find(name="a", class_="item-title").text # contains all relevant info about product
@@ -51,12 +49,12 @@ def scrape_newegg_cpus() -> list[CPU]:
 
             link = cpu.find(name="a", class_="item-title").get(key="href")
 
-            price_dollars = cpu.find(name="li", class_="price-current").find(name="strong").text
-            if price_dollars == "COMING SOON":
-                price = "COMING SOON"
-            else:
+            try: # make sure price exists
+                price_dollars = cpu.find(name="li", class_="price-current").find(name="strong").text
                 price_cents = cpu.find(name="li", class_="price-current").find(name="sup").text
                 price = price_dollars + price_cents # current price with discounts
+            except:
+                price = "N/A"
 
             date = datetime.now().isoformat()[:10] # YYYY-MM-DD format
 
@@ -64,6 +62,8 @@ def scrape_newegg_cpus() -> list[CPU]:
             cpus.append(new_cpu)
 
         time.sleep(random.uniform(1.5, 3.0)) # limit scraping rate
+
+    print(f"found {len(cpus)} CPUs.") # indicate how many CPUs were found when updating database
 
     return cpus
 
@@ -82,8 +82,6 @@ def scrape_newegg_gpus() -> list[GPU]:
         # extract all GPUs on page
         gpu_tags = soup.find_all(name="div", class_="item-cell")
 
-        print(f"found {len(gpu_tags)} GPUs on page {page}.") # debug
-
         # extract relevant cpu information
         for gpu in gpu_tags:
             title = gpu.find(name="a", class_="item-title").text # contains all relevant info about product
@@ -91,12 +89,12 @@ def scrape_newegg_gpus() -> list[GPU]:
 
             link = gpu.find(name="a", class_="item-title").get(key="href")
 
-            price_dollars = gpu.find(name="li", class_="price-current").find(name="strong").text
-            if price_dollars == "COMING SOON":
-                price = "COMING SOON"
-            else:
+            try: # make sure price exists
+                price_dollars = gpu.find(name="li", class_="price-current").find(name="strong").text
                 price_cents = gpu.find(name="li", class_="price-current").find(name="sup").text
                 price = price_dollars + price_cents # current price with discounts
+            except:
+                price = "N/A"
 
             date = datetime.now().isoformat()[:10] # YYYY-MM-DD format
 
@@ -105,6 +103,8 @@ def scrape_newegg_gpus() -> list[GPU]:
 
         time.sleep(random.uniform(1.5, 3.0)) # limit scraping rate
             
+    print(f"found {len(gpus)} GPUs.") # indicate how many GPUs were found when updating database
+
     return gpus
 
 
@@ -123,8 +123,6 @@ def scrape_newegg_mobos() -> list[MOBO]:
 
         # extract all motherboards on page
         mobo_tags = soup.find_all(name="div", class_="item-cell")
-
-        print(f"found {len(mobo_tags)} AMD motherboards on page {page}.") # debug
 
         # extract relevant cpu information
         for mobo in mobo_tags:
@@ -158,8 +156,6 @@ def scrape_newegg_mobos() -> list[MOBO]:
          # extract all motherboards on page
         mobo_tags = soup.find_all(name="div", class_="item-cell")
 
-        print(f"found {len(mobo_tags)} Intel motherboards on page {page}.") # debug
-
         # extract relevant cpu information
         for mobo in mobo_tags:
             title = mobo.find(name="a", class_="item-title").text # contains all relevant info about product
@@ -181,5 +177,7 @@ def scrape_newegg_mobos() -> list[MOBO]:
             mobos.append(new_mobo)
 
         time.sleep(random.uniform(1.5, 3.0)) # limit scraping rate
+
+    print(f"found {len(mobos)} motherboards.") # indicate how many motherboards were found when updating database
 
     return mobos
