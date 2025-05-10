@@ -53,7 +53,7 @@ cd Pc-Part-Scraper
 ### 3. Create a virtual environment
 
 ```bash
-python -m venv venv
+python -m venv .venv
 
 # For macOS/Linux:
 source .venv/Scripts/activate
