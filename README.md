@@ -2,7 +2,7 @@
 
 A Python command-line application that scrapes Pc part listings from Newegg and stores their prices in a local SQLite database. Users can interactively search and view component listings by name.
 
-> ⚠️ Project is a work in progress — currently supports Newegg scraping for CPUs, GPUs, and motherboards.
+> ⚠️ Project is no longer being worked on.
 
 ---
 
